@@ -62,6 +62,47 @@ def find_kth_from_twolist(a, b, k):
     return ans
 
 
+# 顺序表的值有正有负 使负的在前 正的在后
+# 如果按顺序排呢？
+def sort_array(a):
+    left, right = 0, len(a)-1
+    while left < right:
+        while left < right and a[left] < 0:
+            left += 1
+        while left < right and a[right] > 0:
+            right -= 1
+        if left < right:
+            tenp = a[left]
+            a[left] = a[right]
+            a[right] = tenp
+            left += 1
+            right -= 1
+    return a
+
+
+# 顺序表中有若干零值的节点 删除零值节点 且不改变其他节点的相对位置
+def del_zero(a):
+    zl = 0
+    for i in range(len(a)):
+        if a[i] != 0 and zl > 0:
+            a[i-zl] = a[i]
+            a[i] = 0
+        elif a[i] == 0:
+            zl += 1
+    return a[:len(a)-zl]
+
+
+# 逆置顺序表
+def reverse_array(a):
+    i, j = 0, len(a)-1
+    while i < j:
+        temp = a[i]
+        a[i] = a[j]
+        a[j] = temp
+        i += 1
+        j -= 1
+    return a
+
 
 def main():
     a = ["this", "real", "hard", "trh", "hea", "iar", "sld"]
@@ -71,6 +112,11 @@ def main():
     bb = [0, 0]
 
     print(find_kth_from_twolist(aa, bb, 2))
+    aaa = [-1, 2, 4, -3, 5, -7, 9, 10, -11, 12]
+    print(sort_array(aaa))
+    bbb = [0, 2, 0, -3, 5, 0, 9, 10, 0, 12]
+    print(del_zero(bbb))
+    print(reverse_array(bbb))
 
 
 if __name__ == '__main__':
