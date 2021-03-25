@@ -41,25 +41,54 @@ def hill_sort(a, steps=(5, 3, 1)):
 
 
 # 交换排序 上升法冒泡排序
-def bubble_sort(a):
+def bubble_sort(aa):
+    a = list(aa)
+    temp = 0
     for i in range(0, len(a)-1):
+        # 上升法
+        flag = 0
         for j in range(len(a)-1, i, -1):
-            if a[j-1] > a[j]:
-                b = a[j]
-                a[j] = a[j-1]
-                a[j-1] = b
-            else:
+            if a[j] >= a[j-1]:
                 continue
-        print(a)
+            else:
+                temp = a[j]
+                a[j] = a[j-1]
+                a[j-1] = temp
+                flag = 1
+        if not flag:
+            # 假如没有交换 则代表有序 直接返回
+            break
     return a
 
 
 # 交换排序 快速排序 Hoare 霍尔 1960
+def hoare_partition(a, s, e):
+    ttemp = a[s]
+    i, j = s, e
+    while i < j:
+        while i < j and a[j] >= ttemp:
+            j -= 1
+        if i < j:
+            a[i] = a[j]
+            i += 1
+        while i < j and a[i] <= ttemp:
+            i += 1
+        if i < j:
+            a[j] = a[i]
+            j -= 1
+    a[i] = ttemp
+    return i
+
+
+def exchange_sort(a, s, e):
+
+    pass
 
 
 if __name__ == '__main__':
     aa = [5, 1, 2, 3, 4, 100, 999, 100, 9, 7, 4, 2]
     # print(insert_sort(aa))
-    print(aa)
     # hill_sort(aa)
-    bubble_sort(aa)
+    # bubble_sort(aa)
+    hoare_partition(aa, 0, len(aa)-1)
+    print(aa)
