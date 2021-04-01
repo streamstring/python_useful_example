@@ -14,6 +14,7 @@ class Lnode2:
 class Llist2:
     def __init__(self):
         self._anynode = None
+        self._length = 0
 
     def is_empty(self):
         return self._anynode is None
@@ -25,6 +26,7 @@ class Llist2:
             p.next_ = p
             p.prev = p
             self._anynode = p
+            self._length += 1
             return
         p = self._anynode
         q = Lnode2(elem)
@@ -32,6 +34,7 @@ class Llist2:
         q.prev = p.prev
         p.prev.next_ = q
         p.prev = q
+        self._length += 1
         return
 
     # 添加一个元素到头前
@@ -41,6 +44,7 @@ class Llist2:
             p.next_ = p
             p.prev = p
             self._anynode = p
+            self._length += 1
             return
         p = self._anynode
         q = Lnode2(elem)
@@ -49,11 +53,12 @@ class Llist2:
         p.prev.next_ = q
         p.prev = q
         self._anynode = q
+        self._length += 1
         return
 
     # 链表的长度
     def length(self):
-        pass
+        return self._length
 
     # 插入到位置i
     def insert(self, elem, i):
@@ -64,7 +69,7 @@ class Llist2:
         p = self._anynode
         q = self._anynode
         while p is not None:
-            print(p.elem)
+            print(p.elem, end=', ')
             p = p.next_
             if p == q:
                 break
@@ -89,37 +94,56 @@ class Llist2:
                 p = p.prev
             nsort = nsort.next_
 
-    # 快速排序
-    def _sort_helper(self, leftnode, rightnode):
-        if self._anynode is None:
+    def get_i(self, i=0):
+        if i >= self._length or self._anynode is None:
+            return None
+        p, n = self._anynode, 0
+        while n < i+1:
+            if n == i:
+                return p
+            n += 1
+            p = p.next_
+
+    def sort_helper(self, left, right):
+        head = self._anynode
+        if head is None:
             return
+        leftnode, rightnode = self.get_i(left), self.get_i(right)
         x = leftnode.elem
-        while leftnode != rightnode:
-            while rightnode is not self._anynode.prev and rightnode.elem >= x:
+        while left < right:
+            while left < right and rightnode.elem >= x:
                 rightnode = rightnode.prev
-            if leftnode != rightnode:
+                right -= 1
+            if left < right:
                 leftnode.elem = rightnode.elem
                 leftnode = leftnode.next_
-            while leftnode is not self._anynode.prev and leftnode.elem <= x:
+                left += 1
+            while left < right and leftnode.elem <= x:
                 leftnode = leftnode.next_
-            if leftnode != rightnode:
+                left += 1
+            if left < right:
                 rightnode.elem = leftnode.elem
                 rightnode = rightnode.prev
+                right -= 1
         leftnode.elem = x
-        return leftnode
+        return left
 
-    def quick_sort(self):
-        if self._anynode is None:
+    # 快速排序
+    def quick_sort(self, left, right):
+        if left >= right:
             return
+        mid = self.sort_helper(left, right)
+        self.quick_sort(left, mid-1)
+        self.quick_sort(mid+1, right)
 
 
 def main():
     llist = Llist2()
-    for i in range(10):
+    for i in range(5):
         llist.preappend(i)
     llist.printall()
-    llist.mysort()
-    print("sorted")
+    print("\n")
+    llist.quick_sort(0, llist.length()-1)
     llist.printall()
 
 
