@@ -137,14 +137,78 @@ class Llist2:
         self.quick_sort(mid+1, right)
 
 
+# 基于list的栈
+# 入栈 出栈 空栈
+class Mstack:
+    def __init__(self):
+        self._elem = []
+
+    def push(self, elem):
+        self._elem.append(elem)
+
+    def pop(self):
+        if not self._elem:
+            raise Exception("stack is empty")
+        return self._elem.pop()
+
+    def is_empty(self):
+        return not self._elem
+
+
+# 基于链表的队列
+# 入队 出队 队空
+class Lnode:
+    def __init__(self, elem=None, next_=None):
+        self.elem = elem
+        self.next_ = next_
+
+
+class Mqueue:
+    def __init__(self):
+        self._head = None
+        self._rear = None
+
+    def enqueue(self, elem):
+        if not self._head:
+            node = Lnode(elem)
+            self._head = node
+            self._rear = node
+            return
+        node = Lnode(elem)
+        self._rear.next_ = node
+        self._rear = node
+
+    def dequeue(self):
+        if not self._head:
+            raise Exception('queue is empty')
+        ee = self._head.elem
+        self._head = self._head.next_
+        return ee
+
+    def printall(self):
+        p = self._head
+        while p is not None:
+            print(p.elem, end='')
+            if p.next_ is not None:
+                print(', ', end='')
+            p = p.next_
+
+
 def main():
-    llist = Llist2()
+    # llist = Llist2()
+    # for i in range(5):
+    # llist.preappend(i)
+    # llist.printall()
+    # print("\n")
+    # llist.quick_sort(0, llist.length()-1)
+    # llist.printall()
+    mqueue = Mqueue()
     for i in range(5):
-        llist.preappend(i)
-    llist.printall()
-    print("\n")
-    llist.quick_sort(0, llist.length()-1)
-    llist.printall()
+        print(i)
+        mqueue.enqueue(i)
+    for j in range(5):
+        print(mqueue.dequeue())
+    mqueue.printall()
 
 
 if __name__ == '__main__':

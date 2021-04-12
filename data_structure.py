@@ -105,8 +105,6 @@ class Llist:
             nsort = nsort.next_
 
 
-
-
 def main():
     llist = Llist()
     for i in range(10):
