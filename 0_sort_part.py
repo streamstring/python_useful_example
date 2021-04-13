@@ -85,6 +85,11 @@ def exchange_sort(a, s, e):
     pass
 
 
+# 堆排序
+def heap_sort(hlist):
+    pass
+
+
 if __name__ == '__main__':
     aa = [5, 1, 2, 3, 4, 100, 999, 100, 9, 7, 4, 2]
     # print(insert_sort(aa))
