@@ -53,22 +53,82 @@ class MFqueue:
             self.shifdown(elist[i], i, end)
 
 
-class Binarytree:
+# 树节点 包含对父节点的引用
+class BtreeNode:
     def __init__(self, dat, left=None, right=None):
         self.data = dat
         self.left = left
         self.right = right
 
-    # 递归 先根序
-    def dlr_get(self):
-        pass
+
+class Btree:
+    def __init__(self):
+        self._root = None
+
+    def is_empty(self):
+        return not self._root
+
+    def set_right(self, rright):
+        self._root.right = rright
+
+    def set_root(self, rroot):
+        self._root = rroot
+
+    # 先根序
+    def get_elements_dlr(self):
+        nnode = self._root
+        sstack = []
+        while nnode is not None or len(sstack) > 0:
+            while nnode is not None:
+                sstack.append(nnode.right)
+                yield nnode.data
+                nnode = nnode.left
+            nnode = sstack.pop()
+
+    # 后根序
+    def get_elements_lrd(self):
+        nnode = self._root
+        sstack = []
+        while nnode is not None or len(sstack) > 0:
+            while nnode is not None:
+                sstack.append(nnode)
+                nnode = nnode.left if nnode.left else nnode.right
+            nnode = sstack.pop()
+            yield nnode.data
+            if len(sstack) > 0 and nnode == sstack[-1].left:
+                nnode = sstack[-1].right
+            else:
+                nnode = None
+
+    # 中根序
+    def get_elements_ldr(self):
+        nnode = self._root
+        sstack = []
+        while nnode is not None or len(sstack) > 0:
+            while nnode is not None:
+                sstack.append(nnode)
+                nnode = nnode.left
+            nnode = sstack.pop()
+            yield nnode.data
+            nnode = nnode.right
 
 
 def main():
-    a = MFqueue([6, 5, 4, 3, 2, 1])
-    a.enqueue(100)
-    while not a.is_empty():
-        print(a.dequeue())
+    # a = MFqueue([6, 5, 4, 3, 2, 1])
+    # a.enqueue(100)
+    # while not a.is_empty():
+    #     print(a.dequeue())
+    btnode = BtreeNode('A', BtreeNode('B'
+                                      , BtreeNode('D', None, BtreeNode('H', None, None))
+                                      , BtreeNode('E', None, BtreeNode('I', None, None)))
+                          , BtreeNode('C'
+                                      , BtreeNode('F', BtreeNode('J', None, None), BtreeNode('K', None, None))
+                                      , BtreeNode('G', None, None))
+                       )
+    btree = Btree()
+    btree.set_root(btnode)
+    for i in btree.get_elements_ldr():
+        print(i)
 
 
 if __name__ == '__main__':
